@@ -1,0 +1,72 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  googleId  String   @unique
+  email     String   @unique
+  name      String
+  photo     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  banished  Boolean  @default(false)
+
+  // tokens   UserTokens[]
+  meetings MeetingsUsers[]
+  @@map("users")
+}
+
+// model UserTokens {
+//   id           String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+//   refreshToken String
+//   userId       String   @db.ObjectId
+//   expiresDate  DateTime
+//   createdAt    DateTime @default(now())
+//   updatedAt    DateTime @updatedAt
+//   disabled     Boolean  @default(false)
+
+//   user User @relation(fields: [userId], references: [id])
+//   @@map("user_tokens")
+// }
+
+model Meeting {
+  id          String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name        String    @unique
+  description String?
+  date        DateTime
+  invitations Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  users MeetingsUsers[]
+  @@map("meetings")
+}
+
+model MeetingsUsers {
+  id        String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  userId    String    @db.ObjectId
+  meetingId String    @db.ObjectId
+  role      Role      @default(CUSTOMER)
+  passport  String
+  checked   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id])
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+  @@map("meetings_users")
+}
+
+enum Role {
+  CUSTOMER
+  STAFF
+  ADMIN
+}

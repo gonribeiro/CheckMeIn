@@ -1,0 +1,341 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Check Me In Documentation",
+        "description": "This is an API CheckMeIn",
+        "version": "1.0.0",
+        "contact": {
+            "url": "https://github.com/gonribeiro"
+        }
+    },
+    "paths": {
+        "/user/authenticate/": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create or Login user with Google",
+                "description": "Create or Login user with Google",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "token": "Google Token"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User"
+                    },
+                    "500": {
+                        "description": "User or password invalid! or Missing information from Google Account."
+                    }
+                }
+            }
+        },
+        "/user/check/": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Check user invite",
+                "description": "Check user invite",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "meetingId": "12345",
+                                    "passport": "12345-12345"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "meetingsUsers"
+                    },
+                    "400": {
+                        "description": "Passport not found! or You are not the admin of this meeting."
+                    }
+                }
+            }
+        },
+        "/meeting/create/": {
+            "post": {
+                "tags": [
+                    "Meeting"
+                ],
+                "summary": "Create a new meeting",
+                "description": "Create a new meeting",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "datetime"
+                                    },
+                                    "invitations": {
+                                        "type": "int"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Celebrate Junior's fifth birthday!",
+                                    "description": "At mom and dad's house.",
+                                    "date": "2022-07-14T19:43:37+0100",
+                                    "invitations": 8
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Meeting Created"
+                    },
+                    "400": {
+                        "description": "Meeting already exists! Use another title."
+                    }
+                }
+            }
+        },
+        "/meetings/allUserMeetings": {
+            "get": {
+                "tags": [
+                    "Meeting"
+                ],
+                "summary": "Get All User Meetings",
+                "description": "Get all user Meetings",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Meetings"
+                    }
+                }
+            }
+        },
+        "/meetings/get/{id}": {
+            "get": {
+                "tags": [
+                    "Meeting"
+                ],
+                "summary": "Get Meeting",
+                "description": "Get Meeting",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "title": "id",
+                        "in": "id",
+                        "description": "Meeting id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Meeting"
+                    },
+                    "400": {
+                        "description": "Meeting not found! Is your meeting ID correct?"
+                    }
+                }
+            }
+        },
+        "/meeting/update/{id}": {
+            "put": {
+                "tags": [
+                    "Meeting"
+                ],
+                "summary": "Update meeting",
+                "description": "Update meeting",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "title": "id",
+                        "in": "id",
+                        "description": "Meeting id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "date": {
+                                        "type": "datetime"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "invitations": {
+                                        "type": "int"
+                                    }
+                                },
+                                "example": {
+                                    "date": "2022-07-14T19:43:37+0100",
+                                    "description": "At mom and dad's house.",
+                                    "invitations": 8
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Meeting Updated"
+                    },
+                    "400": {
+                        "description": "Access denied or meeting not exists. Is your identifier correct?"
+                    }
+                }
+            }
+        },
+        "/meeting/deleteRestore/{id}": {
+            "put": {
+                "tags": [
+                    "Meeting"
+                ],
+                "summary": "Cancel or restore meeting",
+                "description": "Cancel or restore meeting",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "title": "id",
+                        "in": "id",
+                        "description": "Meeting id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "date": {
+                                        "cancel": "boolean"
+                                    }
+                                },
+                                "example": {
+                                    "cancel": "true or false"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Meeting Updated"
+                    },
+                    "400": {
+                        "description": "Access denied or meeting not exists. Is your identifier correct?"
+                    }
+                }
+            }
+        },
+        "/meeting/associate/{id}": {
+            "post": {
+                "tags": [
+                    "Meeting"
+                ],
+                "summary": "Search for a meeting to join",
+                "description": "Search for a meeting to join",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "title": "id",
+                        "in": "id",
+                        "description": "Meeting id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Meeting"
+                    },
+                    "400": {
+                        "description": "Meeting not found! Is your meeting ID correct? or Sorry, meeting has no invites available. or Sorry, meeting has been canceled. or You are already registered for this meeting."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {},
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

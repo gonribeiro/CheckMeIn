@@ -1,0 +1,14 @@
+{
+  "name": "checkmein",
+  "displayName": "checkmein",
+  "expo": {
+    "name": "checkmein",
+    "slug": "checkmein",
+    "scheme": "checkmein",
+    "owner": "tiago777",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
