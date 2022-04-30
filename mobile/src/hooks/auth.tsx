@@ -58,6 +58,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       const { type, params } = await AuthSession
         .startAsync({ authUrl }) as AuthorizationResponse;
 
+      // console.log(type, params.access_token)
       if (type === 'success') {
         const token = params.access_token;
         const response = await api.post('user/authenticate/', {

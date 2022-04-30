@@ -14,7 +14,7 @@ Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](L
 
 ## 📒 Notas do aprendizado com NodeJS
 - yarn init -y
-- yarn add express bcrypt jsonwebtoken @prisma/client express-async-errors uuidv4 dayjs swagger-ui-express @sentry/node @sentry/tracing google-auth-library
+- yarn add express bcrypt jsonwebtoken @prisma/client express-async-errors uuidv4 swagger-ui-express @sentry/node @sentry/tracing google-auth-library
 - yarn add prisma typescript ts-node-dev @types/express @types/jsonwebtoken @types/bcrypt @types/uuidv4 @types/swagger-ui-express -D
 - yarn tsc --init
     - tsconfig:
